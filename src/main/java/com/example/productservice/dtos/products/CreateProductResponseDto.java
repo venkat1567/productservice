@@ -1,4 +1,5 @@
-package com.example.productservice.dtos;
+package com.example.productservice.dtos.products;
+
 
 
 import com.example.productservice.models.Product;

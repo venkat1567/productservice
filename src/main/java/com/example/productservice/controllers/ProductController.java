@@ -1,26 +1,26 @@
 package com.example.productservice.controllers;
 
 
-import com.example.productservice.dtos.CreateProductRequestDto;
-import com.example.productservice.dtos.CreateProductResponseDto;
+import com.example.productservice.dtos.products.CreateProductDto;
+import com.example.productservice.dtos.products.GetAllProductsResponseDto;
+import com.example.productservice.dtos.products.GetProductDto;
+import com.example.productservice.dtos.products.PatchProductResponseDto;
 import com.example.productservice.models.Product;
 import com.example.productservice.services.ProductService;
-import com.example.productservice.services.ProductServiceDBImpl;
-import com.example.productservice.services.ProductServiceFakestoreImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.productservice.dtos.ErrorResponseDto;
+import com.example.productservice.dtos.products.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-//    @Value("${productService}")
-//    private String productServiceType;
 
-    //    @Qualifier()
     private ProductService productService;
-//
-//    @Autowired
-//    private String name;
+
 
 
 
@@ -37,12 +37,24 @@ public class ProductController {
         return CreateProductResponseDto.fromProduct(
                 product
         );
-        //        return "This product is priced at: " + createProductRequestDto.getPrice();
+
+
     }
 
     @GetMapping("")
-    public void getAllProducts() {
+    public GetAllProductsResponseDto getAllProducts() {
+        List<Product> products = productService.getAllProducts();
+        GetAllProductsResponseDto response = new GetAllProductsResponseDto();
 
+        List<GetProductDto> getProductResponseDtos = new ArrayList<>();
+
+        for (Product product: products) {
+            getProductResponseDtos.add(GetProductDto.from(product));
+        }
+
+        response.setProducts(getProductResponseDtos);
+
+        return response;
     }
 
     @GetMapping("/{id}")
@@ -55,7 +67,21 @@ public class ProductController {
 
     }
 
-    public void updateProduct() {}
+    @PatchMapping("/{id}")
+    public PatchProductResponseDto updateProduct(
+            @PathVariable("id") Long productId,
+            @RequestBody CreateProductDto productDto
+    ) {
+        Product product = productService.partialUpdateProduct(
+                productId,
+                productDto.toProduct()
+        );
+
+        PatchProductResponseDto response = new PatchProductResponseDto();
+        response.setProduct(GetProductDto.from(product));
+
+        return response;
+    }
 
     public void replaceProduct() {}
 
