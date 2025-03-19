@@ -26,6 +26,7 @@ public class CreateProductRequestDto {
         category.setName(categoryName);
         product.setCategory(category);
 
+
         return product;
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
@@ -15,6 +16,7 @@ import java.util.List;
 
 
 @ControllerAdvice
+@RestController
 public class ExceptionAdvices {
 
 
@@ -31,6 +33,7 @@ public class ExceptionAdvices {
     public ResponseEntity<String> handleException(Exception exception) {
         return new ResponseEntity<>("General Exception occured",HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
 
 
