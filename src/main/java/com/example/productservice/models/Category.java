@@ -31,5 +31,7 @@ public class Category extends BaseModel {
 
     private int countOfProducts;
 
+    private int numberOfItems;
+
 }
 
